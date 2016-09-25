@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="knight" class="springDI.DamselRescuingKnight">
+        <!--quest注入quest的Bean-->
+        <constructor-arg ref="quest"/>
+    </bean>
+    <!--创建Quest-->
+    <bean id="quest" class="springDI.ConcreteQuest2">
+    </bean>
+    <bean id="ministrel" class="springDI.Ministrel">
+    </bean>
+    <bean class="springDI.TestAop">
+    </bean>
+    <aop:config>
+        <aop:aspect ref="ministrel">
+            <!--定义切点-->
+            <aop:pointcut id="embark" expression="execution(* *.execute(..))"/>
+            <!--定义前置通知-->
+            <aop:before pointcut-ref="embark" method="beforeEmbark"/>
+            <!--定义后置通知-->
+            <aop:after method="afterEmbark" pointcut-ref="embark"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
